@@ -13,8 +13,8 @@ import tensorflow as tf
 from tensorflow.keras.models import load_model
 from tensorflow.keras.preprocessing.image import img_to_array, load_img, array_to_img
 
-model_eval = load_model(r'models\doc_model.h5')
-model_auto = load_model(r'models\auto_model.h5')
+model_eval = load_model(r'models/doc_model.h5')
+model_auto = load_model(r'models/auto_model.h5')
 CLASS_IDXS = ["not good", "good"]
 
 @st.cache
