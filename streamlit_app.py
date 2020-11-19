@@ -13,9 +13,13 @@ import tensorflow as tf
 from tensorflow.keras.models import load_model
 from tensorflow.keras.preprocessing.image import img_to_array, load_img, array_to_img
 
-model_eval = load_model('models/doc_model.h5')
-model_auto = load_model('models/auto_model.h5')
 CLASS_IDXS = ["not good", "good"]
+
+@st.chache
+def load_models():
+  model_eval = load_model('models/doc_model.h5')
+  model_auto = load_model('models/auto_model.h5')
+  return model_eval, model_auto
 
 @st.cache
 def __calculate_score(y_pred_class, y_pred_prob):
@@ -62,6 +66,8 @@ def __get_text_from_image(image):
 
 st.title("denoise and evaluate images")
 img_file_buffer = st.file_uploader("Upload an image", type=["png", "jpg", "jpeg"])
+
+model_eval, model_auto = load_models()
 
 if img_file_buffer is not None:
     org = load_img(img_file_buffer)
