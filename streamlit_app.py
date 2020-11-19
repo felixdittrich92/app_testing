@@ -5,7 +5,7 @@ import io
 import cv2
 from PIL import Image
 
-import tempfile
+import textract
 
 import numpy as np
 import tensorflow as tf
@@ -54,25 +54,35 @@ def __auto_encode(image):
     img = Image.fromarray(img)
     return img
 
+@st.cache
+def __get_text_from_image(image):
+  text = textract.process(image, method='tesseract', encoding='utf-8')
+  text = text.decode('utf8')
+  return text
+
 st.title("denoise and evaluate images")
 img_file_buffer = st.file_uploader("Upload an image", type=["png", "jpg", "jpeg"])
 
 if img_file_buffer is not None:
     org = load_img(img_file_buffer)
     y_pred_class, score = __predict_score(img_file_buffer)
+    text = __get_text_from_image(img_file_buffer)
 
     st.image(org, caption=f"Original", width=700)
     st.write("Predicted class : %s" % (CLASS_IDXS[y_pred_class]))
     st.write("Score : %f" % (score))
+    st.write(text)
 
     img = __auto_encode(img_file_buffer)
     file_object = io.BytesIO()
     img.save(file_object, 'PNG')
     y_pred_class, score = __predict_score(file_object)
+    text = __get_text_from_image(file_object)
 
     st.image(img, caption=f"Processed Image", width=700)
     st.write("Predicted class : %s" % (CLASS_IDXS[y_pred_class]))
     st.write("Score : %f" % (score))
+    st.write(text)
 
 else:
     st.write('Please upload single image')
