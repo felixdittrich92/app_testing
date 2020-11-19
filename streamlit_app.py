@@ -19,8 +19,10 @@ CLASS_IDXS = ["not good", "good"]
 def load_models():
   model_eval = load_model('models/doc_model.h5')
   model_eval._make_predict_function()
+  model_eval.summary()
   model_auto = load_model('models/auto_model.h5')
   model_auto._make_predict_function()
+  model_auto.summary()
   return model_eval, model_auto
 
 @st.cache
