@@ -17,10 +17,10 @@ CLASS_IDXS = ["not good", "good"]
 
 @st.cache(allow_output_mutation=True)
 def load_models():
-  model_eval = load_model('models/doc_model.model')
+  model_eval = load_model('models/doc/')
   model_eval._make_predict_function()
   model_eval.summary()
-  model_auto = load_model('models/auto_model.model')
+  model_auto = load_model('models/auto/')
   model_auto._make_predict_function()
   model_auto.summary()
   return model_eval, model_auto
