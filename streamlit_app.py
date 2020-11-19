@@ -15,7 +15,7 @@ from tensorflow.keras.preprocessing.image import img_to_array, load_img, array_t
 
 CLASS_IDXS = ["not good", "good"]
 
-@st.cache
+@st.cache(allow_output_mutation=True)
 def load_models():
   model_eval = load_model('models/doc_model.h5')
   model_auto = load_model('models/auto_model.h5')
