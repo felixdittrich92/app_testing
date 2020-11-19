@@ -19,10 +19,8 @@ CLASS_IDXS = ["not good", "good"]
 def load_models():
   model_eval = load_model('models/doc_model.h5')
   model_eval._make_predict_function()
-  model_eval.summary()
   model_auto = load_model('models/auto_model.h5')
   model_auto._make_predict_function()
-  model_auto.summary()
   return model_eval, model_auto
 
 @st.cache
@@ -76,23 +74,23 @@ model_eval, model_auto = load_models()
 if img_file_buffer is not None:
     org = load_img(img_file_buffer)
     y_pred_class, score = __predict_score(img_file_buffer)
-    text = __get_text_from_image(img_file_buffer)
+   # text = __get_text_from_image(img_file_buffer)
 
     st.image(org, caption=f"Original", width=700)
     st.write("Predicted class : %s" % (CLASS_IDXS[y_pred_class]))
     st.write("Score : %f" % (score))
-    st.write(text)
+   # st.write(text)
 
     img = __auto_encode(img_file_buffer)
     file_object = io.BytesIO()
     img.save(file_object, 'PNG')
     y_pred_class, score = __predict_score(file_object)
-    text = __get_text_from_image(file_object)
+   # text = __get_text_from_image(file_object)
 
     st.image(img, caption=f"Processed Image", width=700)
     st.write("Predicted class : %s" % (CLASS_IDXS[y_pred_class]))
     st.write("Score : %f" % (score))
-    st.write(text)
+   # st.write(text)
 
 else:
     st.write('Please upload single image')
