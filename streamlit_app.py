@@ -62,7 +62,7 @@ def __auto_encode(image):
 @st.cache
 def __get_text_from_image(image):
   custom_oem_psm_config = r'--oem 3 --psm 6'
-  text = pytesseract.image_to_string(Image.open(image), lang='deu + eng', config=custom_oem_psm_config, nice=3)
+  text = pytesseract.image_to_string(Image.open(image), config=custom_oem_psm_config, nice=3)
   return text
 
 st.title("denoise and evaluate scanned document images")
