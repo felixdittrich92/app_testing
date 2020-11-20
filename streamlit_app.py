@@ -73,7 +73,7 @@ model_eval, model_auto = load_models()
 
 temp_file = NamedTemporaryFile(delete=False)
 image = Image.open('images/doc.jpg')
-temp_file.write(bytes(image))
+temp_file.read(image)
 
 if img_file_buffer is not None:
     temp_file = NamedTemporaryFile(delete=False)
