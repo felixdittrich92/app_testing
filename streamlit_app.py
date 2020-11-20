@@ -76,8 +76,8 @@ if img_file_buffer is not None:
     temp_file.write(img_file_buffer.getvalue())
 else:
     temp_file = NamedTemporaryFile(delete=False)
-    demo = load_img('images/doc.jpg')
-    temp_file.write(demo)
+    image = np.array(Image.open('images/doc.jpg'))
+    temp_file.write(image)
 
 
     org = load_img(temp_file.name)
