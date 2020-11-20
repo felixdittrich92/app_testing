@@ -89,7 +89,7 @@ if img_file_buffer is not None:
     temp_file = NamedTemporaryFile(delete=False)
     temp_file.write(file_object.getvalue())
     y_pred_class, score = __predict_score(temp_file.name)
-   # text = __get_text_from_image(file_object)
+    text = __get_text_from_image(temp_file.name)
 
     st.image(img, caption=f"Processed Image", width=700)
     st.write("Predicted class : %s" % (CLASS_IDXS[y_pred_class]))
