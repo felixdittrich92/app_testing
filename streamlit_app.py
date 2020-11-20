@@ -61,7 +61,7 @@ def __auto_encode(image):
 
 @st.cache
 def __get_text_from_image(image):
-  text = textract.process(image, method='tesseract')
+  text = textract.process(image, method='tesseract', encoding='ascii')
   text = text.decode('utf8')
   return text
 
