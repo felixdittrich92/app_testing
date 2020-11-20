@@ -101,8 +101,8 @@ img_file_buffer = st.file_uploader("Upload an image", type=["png", "jpg", "jpeg"
 
 model_eval, model_auto = load_models()
 
-image = np.array(Image.open('images/doc.jpg'))
-app(image)
+demo = 'images/doc.jpg'
+app(demo)
 
 if img_file_buffer is not None:
     temp_file = NamedTemporaryFile(delete=False)
