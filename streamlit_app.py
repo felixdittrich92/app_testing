@@ -75,13 +75,13 @@ def app(image):
   
   with col1:
     st.subheader('Image')
-    st.image(org, caption=f"Original", width=700)
+    st.image(org, caption=f"Original", width=700, use_column_width=True)
     st.subheader('Predictions')
     st.write("Predicted class : %s" % (CLASS_IDXS[y_pred_class]))
     st.write("Score : %f" % (score))
   with col2:
     st.subheader('Extracted text')
-    st.text(text)
+    st.text(text, use_column_width=True)
 
   img = __auto_encode(image)
   file_object = io.BytesIO()
