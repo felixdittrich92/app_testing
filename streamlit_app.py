@@ -6,7 +6,8 @@ from tempfile import NamedTemporaryFile
 import cv2
 from PIL import Image
 
-import textract
+#import textract
+import pytesseract
 
 import numpy as np
 import tensorflow as tf
@@ -61,8 +62,9 @@ def __auto_encode(image):
 
 @st.cache
 def __get_text_from_image(image):
-  text = textract.process(image, method='tesseract', encoding='ascii')
-  text = text.decode('utf8')
+  text = pytesseract.image_to_string(Image.open(image))
+#  text = textract.process(image, method='tesseract', encoding='ascii')
+#  text = text.decode('utf8')
   return text
 
 st.title("denoise and evaluate scanned document images")
