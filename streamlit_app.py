@@ -87,7 +87,7 @@ if img_file_buffer is not None:
     #file_object = io.BytesIO()
     #img.save(file_object, 'PNG')
     temp_file = NamedTemporaryFile(delete=False)
-    temp_file.write(img.getvalue())
+    temp_file.write(img)
     y_pred_class, score = __predict_score(temp_file)
    # text = __get_text_from_image(file_object)
 
