@@ -41,23 +41,23 @@ def __load_and_preprocess_custom_image(image_path):
 
 @st.cache
 def __predict_score(image):
-    image = __load_and_preprocess_custom_image(image)
-    y_pred = model_eval.predict(np.expand_dims(image, axis=0), verbose=1)[0] 
-    y_pred_class = np.argmax(y_pred)
-    y_pred_prob = y_pred[y_pred_class]*100 
-    score = __calculate_score(y_pred_class, y_pred_prob)
-    return y_pred_class, score
+  image = __load_and_preprocess_custom_image(image)
+  y_pred = model_eval.predict(np.expand_dims(image, axis=0), verbose=1)[0] 
+  y_pred_class = np.argmax(y_pred)
+  y_pred_prob = y_pred[y_pred_class]*100 
+  score = __calculate_score(y_pred_class, y_pred_prob)
+  return y_pred_class, score
 
 @st.cache
 def __auto_encode(image):
-    org_img = load_img(image, color_mode = 'grayscale')
-    org_img = img_to_array(org_img)
-    img = org_img.astype('float32')
-    img = np.expand_dims(img, axis=0)
-    y_pred = np.squeeze(model_auto.predict(img, verbose=1))
-    img = cv2.convertScaleAbs(y_pred, alpha=(255.0))
-    img = Image.fromarray(img)
-    return img
+  org_img = load_img(image, color_mode = 'grayscale')
+  org_img = img_to_array(org_img)
+  img = org_img.astype('float32')
+  img = np.expand_dims(img, axis=0)
+  y_pred = np.squeeze(model_auto.predict(img, verbose=1))
+  img = cv2.convertScaleAbs(y_pred, alpha=(255.0))
+  img = Image.fromarray(img)
+  return img
 
 @st.cache
 def __get_text_from_image(image):
@@ -81,8 +81,6 @@ def app(image):
   img = __auto_encode(image)
   file_object = io.BytesIO()
   img.save(file_object, 'PNG')
-  img_str = base64.b64encode(file_object.getvalue()).decode()
-	href = f"<a href="data:file/png;base64,{img_str}">Download result</a>"
   temp_file = NamedTemporaryFile(delete=False)
   temp_file.write(file_object.getvalue())
   y_pred_class, score = __predict_score(temp_file.name)
@@ -97,7 +95,7 @@ def app(image):
   st.write("Score : %f" % (score))
   st.subheader('Extracted text')
   st.text(text)
-  st.markdown(href, unsafe_allow_html=True)
+  st.markdown("Built with Streamlit by [Felix](https://github.com/felixdittrich92?tab=repositories)")
 
 
 st.title("denoise and evaluate")
@@ -107,11 +105,11 @@ img_file_buffer = st.file_uploader("Upload an image", type=["png", "jpg", "jpeg"
 model_eval, model_auto = load_models()
 
 if img_file_buffer is not None:
-    temp_file = NamedTemporaryFile(delete=False)
-    temp_file.write(img_file_buffer.getvalue())
-    app(temp_file.name)
+  temp_file = NamedTemporaryFile(delete=False)
+  temp_file.write(img_file_buffer.getvalue())
+  app(temp_file.name)
 else:
-    demo = 'images/doc.jpg'
-    app(demo)
-    st.write("------------------------------------------")
-    st.title('Try it and upload your own scanned document !')
+  demo = 'images/doc.jpg'
+  app(demo)
+  st.write("------------------------------------------")
+  st.title('Try it and upload your own scanned document !')
