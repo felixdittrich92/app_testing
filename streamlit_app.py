@@ -67,12 +67,13 @@ def __get_text_from_image(image):
 
 st.title("denoise and evaluate images")
 img_file_buffer = st.file_uploader("Upload an image", type=["png", "jpg", "jpeg"])
-temp_file = NamedTemporaryFile(delete=False)
-temp_file.write(img_file_buffer.getvalue())
 
 model_eval, model_auto = load_models()
 
 if img_file_buffer is not None:
+    temp_file = NamedTemporaryFile(delete=False)
+    temp_file.write(img_file_buffer.getvalue())
+
     org = load_img(temp_file.name)
     y_pred_class, score = __predict_score(temp_file.name)
    # text = __get_text_from_image(img_file_buffer)
@@ -83,9 +84,11 @@ if img_file_buffer is not None:
    # st.write(text)
 
     img = __auto_encode(temp_file.name)
-    file_object = io.BytesIO()
-    img.save(file_object, 'PNG')
-    y_pred_class, score = __predict_score(file_object)
+    #file_object = io.BytesIO()
+    #img.save(file_object, 'PNG')
+    temp_file = NamedTemporaryFile(delete=False)
+    temp_file.write(img.getvalue())
+    y_pred_class, score = __predict_score(temp_file)
    # text = __get_text_from_image(file_object)
 
     st.image(img, caption=f"Processed Image", width=700)
