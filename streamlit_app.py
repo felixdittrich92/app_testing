@@ -61,8 +61,8 @@ def __auto_encode(image):
 
 @st.cache
 def __get_text_from_image(image):
-  text = textract.process(image)
-  #text = text.decode('utf8')
+  text = textract.process(image, method='tesseract', encoding='utf-8')
+  text = text.decode('utf8')
   return text
 
 st.title("denoise and evaluate scanned document images")
@@ -76,7 +76,7 @@ if img_file_buffer is not None:
 
     org = load_img(temp_file.name)
     y_pred_class, score = __predict_score(temp_file.name)
-    text = __get_text_from_image(temp_file.name)
+   # text = __get_text_from_image(temp_file.name)
 
     st.image(org, caption=f"Original", width=700)
     st.write("Predicted class : %s" % (CLASS_IDXS[y_pred_class]))
