@@ -78,35 +78,34 @@ temp_file.write(image)
 if img_file_buffer is not None:
     temp_file = NamedTemporaryFile(delete=False)
     temp_file.write(img_file_buffer.getvalue())
-
-    org = load_img(temp_file.name)
-    y_pred_class, score = __predict_score(temp_file.name)
-    text = __get_text_from_image(temp_file.name)
-
-    st.subheader('Image')
-    st.image(org, caption=f"Original", width=700)
-    st.subheader('Predictions')
-    st.write("Predicted class : %s" % (CLASS_IDXS[y_pred_class]))
-    st.write("Score : %f" % (score))
-    st.subheader('Extracted text')
-    st.text(text)
-
-    img = __auto_encode(temp_file.name)
-    file_object = io.BytesIO()
-    img.save(file_object, 'PNG')
-    temp_file = NamedTemporaryFile(delete=False)
-    temp_file.write(file_object.getvalue())
-    y_pred_class, score = __predict_score(temp_file.name)
-    text = __get_text_from_image(temp_file.name)
-
-    st.subheader('Image')
-    st.image(img, caption=f"Processed Image", width=700)
-    st.subheader('Predictions')
-    st.write("Predicted class : %s" % (CLASS_IDXS[y_pred_class]))
-    st.write("Score : %f" % (score))
-    st.subheader('Extracted text')
-    st.text(text)
-
 else:
     st.write('Please upload single image')
+
+org = load_img(temp_file.name)
+y_pred_class, score = __predict_score(temp_file.name)
+text = __get_text_from_image(temp_file.name)
+
+st.subheader('Image')
+st.image(org, caption=f"Original", width=700)
+st.subheader('Predictions')
+st.write("Predicted class : %s" % (CLASS_IDXS[y_pred_class]))
+st.write("Score : %f" % (score))
+st.subheader('Extracted text')
+st.text(text)
+
+img = __auto_encode(temp_file.name)
+file_object = io.BytesIO()
+img.save(file_object, 'PNG')
+temp_file = NamedTemporaryFile(delete=False)
+temp_file.write(file_object.getvalue())
+y_pred_class, score = __predict_score(temp_file.name)
+text = __get_text_from_image(temp_file.name)
+
+st.subheader('Image')
+st.image(img, caption=f"Processed Image", width=700)
+st.subheader('Predictions')
+st.write("Predicted class : %s" % (CLASS_IDXS[y_pred_class]))
+st.write("Score : %f" % (score))
+st.subheader('Extracted text')
+st.text(text)
 
