@@ -86,6 +86,8 @@ def app(image):
   y_pred_class, score = __predict_score(image)
   text = __get_text_from_image(image)
 
+  st.write("------------------------------------------")
+
   st.subheader('Image')
   st.image(img, caption=f"Processed Image", width=700)
   st.subheader('Predictions')
@@ -109,7 +111,8 @@ if img_file_buffer is not None:
     temp_file.write(img_file_buffer.getvalue())
     app(temp_file.name)
 else:
-    st.write('Please upload single image')
+    st.write("------------------------------------------")
+    st.write('You can upload your own images ')
 
 
 
