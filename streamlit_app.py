@@ -65,7 +65,8 @@ def __get_text_from_image(image):
   text = pytesseract.image_to_string(Image.open(image), config=custom_oem_psm_config, nice=3)
   return text
 
-st.title("denoise and evaluate scanned document images")
+st.title("denoise and evaluate")
+st.title("scanned document images")
 img_file_buffer = st.file_uploader("Upload an image", type=["png", "jpg", "jpeg"])
 
 model_eval, model_auto = load_models()
@@ -78,9 +79,12 @@ if img_file_buffer is not None:
     y_pred_class, score = __predict_score(temp_file.name)
     text = __get_text_from_image(temp_file.name)
 
+    st.subheader('Image')
     st.image(org, caption=f"Original", width=700)
+    st.subheader('Predictions')
     st.write("Predicted class : %s" % (CLASS_IDXS[y_pred_class]))
     st.write("Score : %f" % (score))
+    st.subheader('Extracted text')
     st.text(text)
 
     img = __auto_encode(temp_file.name)
@@ -91,9 +95,12 @@ if img_file_buffer is not None:
     y_pred_class, score = __predict_score(temp_file.name)
     text = __get_text_from_image(temp_file.name)
 
+    st.subheader('Image')
     st.image(img, caption=f"Processed Image", width=700)
+    st.subheader('Predictions')
     st.write("Predicted class : %s" % (CLASS_IDXS[y_pred_class]))
     st.write("Score : %f" % (score))
+    st.subheader('Extracted text')
     st.text(text)
 
 else:
