@@ -83,8 +83,8 @@ def app(image):
   img.save(file_object, 'PNG')
   temp_file = NamedTemporaryFile(delete=False)
   temp_file.write(file_object.getvalue())
-  y_pred_class, score = __predict_score(image)
-  text = __get_text_from_image(image)
+  y_pred_class, score = __predict_score(temp_file.name)
+  text = __get_text_from_image(temp_file.name)
 
   st.write("------------------------------------------")
 
