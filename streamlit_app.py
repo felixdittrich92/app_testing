@@ -61,7 +61,7 @@ def __auto_encode(image):
 
 @st.cache
 def __get_text_from_image(image):
-  text = textract.process(image, method='tesseract', encoding='utf-8')
+  text = textract.process(image, method='tesseract')
   text = text.decode('utf8')
   return text
 
@@ -81,7 +81,7 @@ if img_file_buffer is not None:
     st.image(org, caption=f"Original", width=700)
     st.write("Predicted class : %s" % (CLASS_IDXS[y_pred_class]))
     st.write("Score : %f" % (score))
-   # st.write(text)
+    st.text(text)
 
     img = __auto_encode(temp_file.name)
     file_object = io.BytesIO()
@@ -94,7 +94,7 @@ if img_file_buffer is not None:
     st.image(img, caption=f"Processed Image", width=700)
     st.write("Predicted class : %s" % (CLASS_IDXS[y_pred_class]))
     st.write("Score : %f" % (score))
-   # st.write(text)
+    st.text(text)
 
 else:
     st.write('Please upload single image')
