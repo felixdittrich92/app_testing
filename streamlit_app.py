@@ -71,14 +71,13 @@ img_file_buffer = st.file_uploader("Upload an image", type=["png", "jpg", "jpeg"
 
 model_eval, model_auto = load_models()
 
+temp_file = NamedTemporaryFile(delete=False)
+image = np.array(Image.open('images/doc.jpg'))
+temp_file.write(image)
+
 if img_file_buffer is not None:
     temp_file = NamedTemporaryFile(delete=False)
     temp_file.write(img_file_buffer.getvalue())
-else:
-    temp_file = NamedTemporaryFile(delete=False)
-    image = np.array(Image.open('images/doc.jpg'))
-    temp_file.write(image)
-
 
     org = load_img(temp_file.name)
     y_pred_class, score = __predict_score(temp_file.name)
