@@ -81,6 +81,8 @@ def app(image):
   img = __auto_encode(image)
   file_object = io.BytesIO()
   img.save(file_object, 'PNG')
+  img_str = base64.b64encode(file_object.getvalue()).decode()
+	href = f'<a href="data:file/jpg;base64,{img_str}">Download result</a>'
   temp_file = NamedTemporaryFile(delete=False)
   temp_file.write(file_object.getvalue())
   y_pred_class, score = __predict_score(temp_file.name)
@@ -95,6 +97,7 @@ def app(image):
   st.write("Score : %f" % (score))
   st.subheader('Extracted text')
   st.text(text)
+  st.markdown(href, unsafe_allow_html=True)
 
 
 st.title("denoise and evaluate")
@@ -112,6 +115,3 @@ else:
     app(demo)
     st.write("------------------------------------------")
     st.title('Try it and upload your own scanned document !')
-
-
-
