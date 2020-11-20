@@ -65,6 +65,7 @@ def __get_text_from_image(image):
   text = pytesseract.image_to_string(Image.open(image), config=custom_oem_psm_config, nice=3)
   return text
 
+@st.cache
 def app(image):
   org = load_img(image)
   y_pred_class, score = __predict_score(image)
