@@ -1,6 +1,7 @@
 import streamlit as st
 
 import io
+from tempfile import NamedTemporaryFile
 
 import cv2
 from PIL import Image
@@ -66,12 +67,14 @@ def __get_text_from_image(image):
 
 st.title("denoise and evaluate images")
 img_file_buffer = st.file_uploader("Upload an image", type=["png", "jpg", "jpeg"])
+temp_file = NamedTemporaryFile(delete=False)
+temp_file.write(img_file_buffer.getvalue())
 
 model_eval, model_auto = load_models()
 
 if img_file_buffer is not None:
-    org = load_img(img_file_buffer)
-    y_pred_class, score = __predict_score(img_file_buffer)
+    org = load_img(temp_file.name)
+    y_pred_class, score = __predict_score(temp_file.name)
    # text = __get_text_from_image(img_file_buffer)
 
     st.image(org, caption=f"Original", width=700)
@@ -79,7 +82,7 @@ if img_file_buffer is not None:
     st.write("Score : %f" % (score))
    # st.write(text)
 
-    img = __auto_encode(img_file_buffer)
+    img = __auto_encode(temp_file.name)
     file_object = io.BytesIO()
     img.save(file_object, 'PNG')
     y_pred_class, score = __predict_score(file_object)
