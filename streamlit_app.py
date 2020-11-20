@@ -65,7 +65,6 @@ def __get_text_from_image(image):
   text = pytesseract.image_to_string(Image.open(image), config=custom_oem_psm_config, nice=3)
   return text
 
-@st.cache
 def app(image):
   org = load_img(image)
   y_pred_class, score = __predict_score(image)
@@ -104,14 +103,13 @@ img_file_buffer = st.file_uploader("Upload an image", type=["png", "jpg", "jpeg"
 
 model_eval, model_auto = load_models()
 
-demo = 'images/doc.jpg'
-app(demo)
-
 if img_file_buffer is not None:
     temp_file = NamedTemporaryFile(delete=False)
     temp_file.write(img_file_buffer.getvalue())
     app(temp_file.name)
 else:
+    demo = 'images/doc.jpg'
+    app(demo)
     st.write("------------------------------------------")
     st.title('Try it and upload your own scanned document !')
 
