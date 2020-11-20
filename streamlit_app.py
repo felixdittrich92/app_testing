@@ -76,7 +76,7 @@ if img_file_buffer is not None:
 
     org = load_img(temp_file.name)
     y_pred_class, score = __predict_score(temp_file.name)
-    text = __get_text_from_image(org)
+    text = __get_text_from_image(img_file_buffer)
 
     st.image(org, caption=f"Original", width=700)
     st.write("Predicted class : %s" % (CLASS_IDXS[y_pred_class]))
