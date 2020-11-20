@@ -70,13 +70,18 @@ def app(image):
   y_pred_class, score = __predict_score(image)
   text = __get_text_from_image(image)
 
-  st.subheader('Image')
-  st.image(org, caption=f"Original", width=700)
-  st.subheader('Predictions')
-  st.write("Predicted class : %s" % (CLASS_IDXS[y_pred_class]))
-  st.write("Score : %f" % (score))
-  st.subheader('Extracted text')
-  st.text(text)
+  col1, col2 = st.beta_columns(2)
+
+  
+  with col1:
+    st.subheader('Image')
+    st.image(org, caption=f"Original", width=700)
+    st.subheader('Predictions')
+    st.write("Predicted class : %s" % (CLASS_IDXS[y_pred_class]))
+    st.write("Score : %f" % (score))
+  with col2:
+    st.subheader('Extracted text')
+    st.text(text)
 
   img = __auto_encode(image)
   file_object = io.BytesIO()
