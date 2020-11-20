@@ -62,7 +62,7 @@ def __auto_encode(image):
 @st.cache
 def __get_text_from_image(image):
   text = textract.process(image, method='tesseract', encoding='utf-8')
-  text = text.decode('utf8')
+  #text = text.decode('utf8')
   return text
 
 st.title("denoise and evaluate scanned document images")
