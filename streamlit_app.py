@@ -88,7 +88,7 @@ if img_file_buffer is not None:
     img.save(file_object, 'PNG')
     temp_file = NamedTemporaryFile(delete=False)
     temp_file.write(file_object.getvalue())
-    y_pred_class, score = __predict_score(temp_file)
+    y_pred_class, score = __predict_score(temp_file.name)
    # text = __get_text_from_image(file_object)
 
     st.image(img, caption=f"Processed Image", width=700)
