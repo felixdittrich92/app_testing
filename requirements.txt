@@ -2,4 +2,3 @@ tensorflow
 numpy
 opencv-python
 pytesseract
-# textract

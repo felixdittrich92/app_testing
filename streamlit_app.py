@@ -6,7 +6,6 @@ from tempfile import NamedTemporaryFile
 import cv2
 from PIL import Image
 
-#import textract
 import pytesseract
 
 import numpy as np
@@ -62,9 +61,8 @@ def __auto_encode(image):
 
 @st.cache
 def __get_text_from_image(image):
-  text = pytesseract.image_to_string(Image.open(image))
-#  text = textract.process(image, method='tesseract', encoding='ascii')
-#  text = text.decode('utf8')
+  custom_oem_psm_config = r'--oem 3 --psm 6'
+  text = pytesseract.image_to_string(Image.open(image), lang='de + eng', config=custom_oem_psm_config, nice=3)
   return text
 
 st.title("denoise and evaluate scanned document images")
