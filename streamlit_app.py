@@ -74,6 +74,11 @@ model_eval, model_auto = load_models()
 if img_file_buffer is not None:
     temp_file = NamedTemporaryFile(delete=False)
     temp_file.write(img_file_buffer.getvalue())
+else:
+    temp_file = NamedTemporaryFile(delete=False)
+    demo = load_img('images/doc.jpg')
+    temp_file.write(demo)
+
 
     org = load_img(temp_file.name)
     y_pred_class, score = __predict_score(temp_file.name)
