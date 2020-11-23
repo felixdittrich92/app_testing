@@ -1,4 +1,5 @@
 import streamlit as st
+from streamlit import caching
 
 import io
 import os
@@ -123,6 +124,8 @@ def app(image):
   st.subheader('Extracted text')
   st.text(text)
 
+  caching.clear_cache()
+
   if "use Autoencoder" in checked_stocks:
     img = __auto_encode(image)
     file_object = io.BytesIO()
@@ -141,6 +144,9 @@ def app(image):
     st.write("Score : %f" % (score))
     st.subheader('Extracted text')
     st.text(text)
+
+    caching.clear_cache()
+    
   st.markdown("Built with Streamlit by [Felix](https://github.com/felixdittrich92?tab=repositories)")
 
 
