@@ -6,6 +6,7 @@ from tempfile import NamedTemporaryFile
 
 import cv2
 from PIL import Image
+from imutils.perspective import four_point_transform
 
 import pytesseract
 
@@ -17,8 +18,9 @@ from tensorflow.keras.preprocessing.image import img_to_array, load_img, array_t
 
 CLASS_IDXS = ["not good", "good"]
 
-#os.environ["TESSDATA_PREFIX"] = "/usr/share/tesseract-ocr/4.00/tessdata/"
+os.environ["TESSDATA_PREFIX"] = "/usr/share/tesseract-ocr/4.00/tessdata/"
 #st.write(os.listdir("/usr/share/tesseract-ocr/4.00/tessdata/"))
+st.write(os.environ())
 
 
 @st.cache(allow_output_mutation=True)
@@ -39,8 +41,33 @@ def __calculate_score(y_pred_class, y_pred_prob):
     return scaled_percentage
 
 @st.cache
+def __preprocessing_image(image):
+  # Gaussian blur, Otsu's threshold
+  blur = cv2.GaussianBlur(gray, (5,5), 0)
+  _, thresh = cv2.threshold(blur, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
+
+  # find contours and sort for largest contour
+  cnts = cv2.findContours(thresh, cv2.RETR_EXTERNAL,cv2.CHAIN_APPROX_SIMPLE)
+  cnts = cnts[0] if len(cnts) == 2 else cnts[1]
+  cnts = sorted(cnts, key=cv2.contourArea, reverse=True)
+  displayCnt = None
+
+  for c in cnts:
+      # perform contour approximation
+      peri = cv2.arcLength(c, True)
+      approx = cv2.approxPolyDP(c, 0.02 * peri, True)
+      if len(approx) == 4:
+          displayCnt = approx
+          break
+
+  # obtain birds' eye view of image
+  image = four_point_transform(image, displayCnt.reshape(4, 2))         
+  return image
+
+@st.cache
 def __load_and_preprocess_custom_image(image_path):
   img = load_img(image_path, color_mode = 'grayscale', target_size = (700, 700))
+  img = __preprocessing_image(img)
   img = img_to_array(img).astype('float32')/255
   return img
 
@@ -56,6 +83,7 @@ def __predict_score(image):
 @st.cache
 def __auto_encode(image):
   org_img = load_img(image, color_mode = 'grayscale')
+  org_img = __preprocessing_image(org_img)
   org_img = img_to_array(org_img)
   img = org_img.astype('float32')
   img = np.expand_dims(img, axis=0)
