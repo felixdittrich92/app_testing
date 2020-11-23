@@ -36,37 +36,8 @@ def __calculate_score(y_pred_class, y_pred_prob):
     return scaled_percentage
 
 @st.cache
-def __preprocessing_image(image):
-  # Gaussian blur, Otsu's threshold
-  img = Image.fromarray(image)
-  image = cv2.imread(img)
-  gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
-  blur = cv2.GaussianBlur(gray, (5,5), 0)
-  _, thresh = cv2.threshold(blur, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
-
-  # find contours and sort for largest contour
-  cnts = cv2.findContours(thresh, cv2.RETR_EXTERNAL,cv2.CHAIN_APPROX_SIMPLE)
-  cnts = cnts[0] if len(cnts) == 2 else cnts[1]
-  cnts = sorted(cnts, key=cv2.contourArea, reverse=True)
-  displayCnt = None
-
-  for c in cnts:
-      # perform contour approximation
-      peri = cv2.arcLength(c, True)
-      approx = cv2.approxPolyDP(c, 0.02 * peri, True)
-      if len(approx) == 4:
-          displayCnt = approx
-          break
-
-  # obtain birds' eye view of image
-  image = four_point_transform(image, displayCnt.reshape(4, 2))
-  img = Image.fromarray(image)         
-  return img
-
-@st.cache
 def __load_and_preprocess_custom_image(image_path):
   img = load_img(image_path, color_mode = 'grayscale', target_size = (700, 700))
-  img = __preprocessing_image(img)
   img = img_to_array(img).astype('float32')/255
   return img
 
@@ -82,7 +53,6 @@ def __predict_score(image):
 @st.cache
 def __auto_encode(image):
   org_img = load_img(image, color_mode = 'grayscale')
-  org_img = __preprocessing_image(org_img)
   org_img = img_to_array(org_img)
   img = org_img.astype('float32')
   img = np.expand_dims(img, axis=0)
