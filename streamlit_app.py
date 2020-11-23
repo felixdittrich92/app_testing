@@ -96,6 +96,7 @@ def __get_text_from_image(image):
 
 def app(image):
   org = load_img(image)
+  org = __preprocessing_handy_image(image)
   y_pred_class, score = __predict_score(image)
   text = __get_text_from_image(image)
 
@@ -143,12 +144,6 @@ if img_file_buffer is not None:
   app(temp_file.name)
 else:
   demo = 'images/doc.jpg'
-  img = __preprocessing_handy_image(demo)
-  file_object = io.BytesIO()
-  img.save(file_object, 'PNG')
-  temp_file = NamedTemporaryFile(delete=False)
-  temp_file.write(file_object.getvalue())
-#  app(demo)
-  app(temp_file.name)
+  app(demo)
   st.write("------------------------------------------")
   st.title('Try it and upload your own scanned document !')
