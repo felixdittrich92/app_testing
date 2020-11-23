@@ -110,15 +110,15 @@ def app(image):
 #  display env
 #  st.write(os.listdir("/usr/share/tesseract-ocr/4.00/tessdata/"))
 #  st.write(os.environ)
-  if "use Autoencoder" in checked_stocks:
-    st.subheader('Image')
-    st.image(org, caption=f"Original", width=700)
-    st.subheader('Predictions')
-    st.write("Predicted class : %s" % (CLASS_IDXS[y_pred_class]))
-    st.write("Score : %f" % (score))
-    st.subheader('Extracted text')
-    st.text(text)
+  st.subheader('Image')
+  st.image(org, caption=f"Original", width=700)
+  st.subheader('Predictions')
+  st.write("Predicted class : %s" % (CLASS_IDXS[y_pred_class]))
+  st.write("Score : %f" % (score))
+  st.subheader('Extracted text')
+  st.text(text)
 
+  if "use Autoencoder" in checked_stocks:
     img = __auto_encode(image)
     file_object = io.BytesIO()
     img.save(file_object, 'PNG')
