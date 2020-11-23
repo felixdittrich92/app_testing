@@ -4,7 +4,7 @@ antiword
 unrtf 
 poppler-utils 
 tesseract-ocr-deu
-tesseract-ocr-equ
+tesseract-ocr-osd
 libgtk2.0-dev 
 libjpeg-dev 
 swig
