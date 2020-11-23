@@ -126,7 +126,7 @@ def app(image):
   st.text(text)
 
   if "use Autoencoder" in checked_stocks:
-    img = __auto_encode(org)
+    img = __auto_encode(temp_file.name)
     file_object = io.BytesIO()
     img.save(file_object, 'PNG')
     temp_file = NamedTemporaryFile(delete=True)
