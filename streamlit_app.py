@@ -17,7 +17,7 @@ from tensorflow.keras.preprocessing.image import img_to_array, load_img, array_t
 
 CLASS_IDXS = ["not good", "good"]
 
-os.environ["TESSDATA_PREFIX"] = "/usr/share/tesseract-ocr/4.00/tessdata/"
+os.environ["TESSDATA_PREFIX"] = "/usr/share/tesseract-ocr/4.00/"
 
 @st.cache(allow_output_mutation=True)
 def load_models():
