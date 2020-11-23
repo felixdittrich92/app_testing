@@ -100,9 +100,11 @@ def __get_text_from_image(image):
 @st.cache
 def __get_text_from_image_ocrmypdf(image):
   with TemporaryDirectory() as t:
-  # TODO create Temporary dir save files and use it ...
-    ocrmypdf.ocr(input_file=image , output_file=t, language='eng+deu', sidecar=t, image_dpi=300, rotate_pages=True, remove_background=True, progress_bar=True)
+    pdfa = str(t) + '/1.pdfa'
+    txt= str(t) + '/1.txt'
+    ocrmypdf.ocr(input_file=image , output_file=pdfa, language='eng+deu', sidecar=txt, image_dpi=300, rotate_pages=True, remove_background=True, progress_bar=True)
     print(os.listdir(t))
+    print(txt)
   return text
 
 def app(image):
