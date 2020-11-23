@@ -95,7 +95,7 @@ def __get_text_from_image(image):
   return text
 
 def app(image):
-  stocks = ["Handy Image Preprocessing", "use Autoencoder", "todo use other ocr"]
+  stocks = ["Handy Image Preprocessing", "use Autoencoder", "todo - show timer", "todo - use other ocr"]
   check_boxes = [st.sidebar.checkbox(stock, key=stock) for stock in stocks]
   checked_stocks = [stock for stock, checked in zip(stocks, check_boxes) if checked]
 
