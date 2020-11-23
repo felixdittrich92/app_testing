@@ -59,8 +59,9 @@ def __preprocessing_image(image):
           break
 
   # obtain birds' eye view of image
-  image = four_point_transform(image, displayCnt.reshape(4, 2))         
-  return image
+  image = four_point_transform(image, displayCnt.reshape(4, 2))
+  img = Image.fromarray(image)         
+  return img
 
 @st.cache
 def __load_and_preprocess_custom_image(image_path):
@@ -101,7 +102,7 @@ def app(image):
   org = load_img(image)
   y_pred_class, score = __predict_score(image)
   text = __get_text_from_image(image)
-  
+
   st.write(os.listdir("/usr/share/tesseract-ocr/4.00/tessdata/"))
   st.write(os.environ)
 
