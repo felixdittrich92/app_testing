@@ -65,7 +65,7 @@ def __preprocessing_handy_image(image_path):
 
   # obtain birds' eye view of image
   image = four_point_transform(image, displayCnt.reshape(4, 2))   
-  img = Image.fromarray(img)   
+  img = Image.fromarray(image)   
   return img
 
 @st.cache
