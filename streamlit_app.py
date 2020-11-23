@@ -95,14 +95,15 @@ def __get_text_from_image(image):
   return text
 
 def app(image):
-  stocks = ["HANDY_PREPROCESSING"]
+  stocks = ["Preprocessing", "todo use other ocr"]
   check_boxes = [st.sidebar.checkbox(stock, key=stock) for stock in stocks]
   checked_stocks = [stock for stock, checked in zip(stocks, check_boxes) if checked]
 
-  st.write(checked_stocks)
+  if "Preprocessing" in checked_stocks:
+    org = __preprocessing_handy_image(image)
+  else:
+    org = load_img(image)
 
-#  org = load_img(image)
-  org = __preprocessing_handy_image(image)
   y_pred_class, score = __predict_score(image)
   text = __get_text_from_image(image)
 
