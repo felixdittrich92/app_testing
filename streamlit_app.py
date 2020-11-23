@@ -17,8 +17,8 @@ from tensorflow.keras.preprocessing.image import img_to_array, load_img, array_t
 
 CLASS_IDXS = ["not good", "good"]
 
-os.environ["TESSDATA_PREFIX"] = "/usr/share/tesseract-ocr/4.00/tessdata/"
-st.write(os.listdir("/usr/share/tesseract-ocr/4.00/tessdata/"))
+#os.environ["TESSDATA_PREFIX"] = "/usr/share/tesseract-ocr/4.00/tessdata/"
+#st.write(os.listdir("/usr/share/tesseract-ocr/4.00/tessdata/"))
 
 
 @st.cache(allow_output_mutation=True)
@@ -67,7 +67,7 @@ def __auto_encode(image):
 @st.cache
 def __get_text_from_image(image):
   custom_oem_psm_config = r'--oem 3 --psm 6'
-  text = pytesseract.image_to_string(Image.open(image), config=custom_oem_psm_config, nice=3, lang='deu + eng')
+  text = pytesseract.image_to_string(Image.open(image), config=custom_oem_psm_config, nice=3)
   return text
 
 def app(image):
