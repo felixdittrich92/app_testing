@@ -103,9 +103,14 @@ def app(image):
     org = __preprocessing_handy_image(image)
   else:
     org = load_img(image)
+  
+  file_object = io.BytesIO()
+  org.save(file_object, 'PNG')
+  temp_file = NamedTemporaryFile(delete=False)
+  temp_file.write(file_object.getvalue())
 
-  y_pred_class, score = __predict_score(org)
-  text = __get_text_from_image(org)
+  y_pred_class, score = __predict_score(temp_file.name)
+  text = __get_text_from_image(temp_file.name)
 
 #  display env
 #  st.write(os.listdir("/usr/share/tesseract-ocr/4.00/tessdata/"))
