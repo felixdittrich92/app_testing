@@ -107,7 +107,7 @@ def app(image):
   
   file_object = io.BytesIO()
   org.save(file_object, 'PNG')
-  temp_file = NamedTemporaryFile(delete=False)
+  temp_file = NamedTemporaryFile(delete=True)
   temp_file.write(file_object.getvalue())
 
   y_pred_class, score = __predict_score(temp_file.name)
@@ -124,13 +124,11 @@ def app(image):
   st.subheader('Extracted text')
   st.text(text)
 
-  caching.clear_cache()
-
   if "use Autoencoder" in checked_stocks:
     img = __auto_encode(image)
     file_object = io.BytesIO()
     img.save(file_object, 'PNG')
-    temp_file = NamedTemporaryFile(delete=False)
+    temp_file = NamedTemporaryFile(delete=True)
     temp_file.write(file_object.getvalue())
     y_pred_class, score = __predict_score(temp_file.name)
     text = __get_text_from_image(temp_file.name)
@@ -145,8 +143,6 @@ def app(image):
     st.subheader('Extracted text')
     st.text(text)
 
-    caching.clear_cache()
-    
   st.markdown("Built with Streamlit by [Felix](https://github.com/felixdittrich92?tab=repositories)")
 
 
