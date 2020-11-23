@@ -19,6 +19,8 @@ CLASS_IDXS = ["not good", "good"]
 
 os.environ["TESSDATA_PREFIX"] = "/usr/share/tesseract-ocr/4.00/tessdata"
 st.write(os.listdir("/usr/share/tesseract-ocr/4.00/tessdata"))
+st.write(os.listdir("/usr/local/share/tessdata"))
+
 
 @st.cache(allow_output_mutation=True)
 def load_models():
