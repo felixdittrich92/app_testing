@@ -104,8 +104,8 @@ def app(image):
   else:
     org = load_img(image)
 
-  y_pred_class, score = __predict_score(image)
-  text = __get_text_from_image(image)
+  y_pred_class, score = __predict_score(org)
+  text = __get_text_from_image(org)
 
 #  display env
 #  st.write(os.listdir("/usr/share/tesseract-ocr/4.00/tessdata/"))
