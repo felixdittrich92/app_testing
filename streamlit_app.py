@@ -43,7 +43,7 @@ def __calculate_score(y_pred_class, y_pred_prob):
 @st.cache
 def __preprocessing_image(image):
   # Gaussian blur, Otsu's threshold
-  blur = cv2.GaussianBlur(gray, (5,5), 0)
+  blur = cv2.GaussianBlur(image, (5,5), 0)
   _, thresh = cv2.threshold(blur, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
 
   # find contours and sort for largest contour
