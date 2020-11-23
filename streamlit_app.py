@@ -3,6 +3,7 @@ from streamlit import caching
 
 import io
 import os
+import gc
 from tempfile import NamedTemporaryFile
 
 import cv2
@@ -144,6 +145,7 @@ def app(image):
     st.text(text)
 
   st.markdown("Built with Streamlit by [Felix](https://github.com/felixdittrich92?tab=repositories)")
+  gc.collect()
 
 
 st.title("denoise and evaluate")
