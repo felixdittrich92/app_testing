@@ -144,8 +144,10 @@ if img_file_buffer is not None:
 else:
   demo = 'images/doc.jpg'
   img = __preprocessing_handy_image(demo)
+  file_object = io.BytesIO()
+  img.save(file_object, 'PNG')
   temp_file = NamedTemporaryFile(delete=False)
-  temp_file.write(img)
+  temp_file.write(file_object.getvalue())
 #  app(demo)
   app(temp_file.name)
   st.write("------------------------------------------")
