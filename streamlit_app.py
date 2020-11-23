@@ -65,7 +65,7 @@ def __auto_encode(image):
 def __get_text_from_image(image):
   os.environ["TESSDATA_PREFIX"] = "/usr/share/tesseract-ocr/4.00/tessdata/"
   custom_oem_psm_config = r'--oem 3 --psm 6'
-  text = pytesseract.image_to_string(Image.open(image), config=custom_oem_psm_config, nice=3, lang='deu')
+  text = pytesseract.image_to_string(Image.open(image), config=custom_oem_psm_config, nice=3, lang='eng + deu + equ')
   return text
 
 def app(image):
