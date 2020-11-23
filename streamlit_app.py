@@ -17,6 +17,7 @@ from tensorflow.keras.models import load_model
 from tensorflow.keras.preprocessing.image import img_to_array, load_img, array_to_img
 
 CLASS_IDXS = ["not good", "good"]
+os.environ["TESSDATA_PREFIX"] = "/usr/share/tesseract-ocr/4.00/tessdata/"
 
 @st.cache(allow_output_mutation=True)
 def load_models():
@@ -42,6 +43,32 @@ def __load_and_preprocess_custom_image(image_path):
   return img
 
 @st.cache
+def __preprocessing_handy_image(image_path):
+  image = cv2.imread(image_path)
+  gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+  blur = cv2.GaussianBlur(gray, (5,5), 0)
+  _, thresh = cv2.threshold(blur, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
+
+  # find contours and sort for largest contour
+  cnts = cv2.findContours(thresh, cv2.RETR_EXTERNAL,cv2.CHAIN_APPROX_SIMPLE)
+  cnts = cnts[0] if len(cnts) == 2 else cnts[1]
+  cnts = sorted(cnts, key=cv2.contourArea, reverse=True)
+  displayCnt = None
+
+  for c in cnts:
+      # perform contour approximation
+      peri = cv2.arcLength(c, True)
+      approx = cv2.approxPolyDP(c, 0.02 * peri, True)
+      if len(approx) == 4:
+          displayCnt = approx
+          break
+
+  # obtain birds' eye view of image
+  image = four_point_transform(image, displayCnt.reshape(4, 2))   
+  img = Image.fromarray(img)   
+  return img
+
+@st.cache
 def __predict_score(image):
   image = __load_and_preprocess_custom_image(image)
   y_pred = model_eval.predict(np.expand_dims(image, axis=0), verbose=1)[0] 
@@ -63,7 +90,6 @@ def __auto_encode(image):
 
 @st.cache
 def __get_text_from_image(image):
-  os.environ["TESSDATA_PREFIX"] = "/usr/share/tesseract-ocr/4.00/tessdata/"
   custom_oem_psm_config = r'--oem 3 --psm 6'
   text = pytesseract.image_to_string(Image.open(image), config=custom_oem_psm_config, nice=3, lang='eng+deu')
   return text
@@ -73,8 +99,9 @@ def app(image):
   y_pred_class, score = __predict_score(image)
   text = __get_text_from_image(image)
 
-  st.write(os.listdir("/usr/share/tesseract-ocr/4.00/tessdata/"))
-  st.write(os.environ)
+#  display env
+#  st.write(os.listdir("/usr/share/tesseract-ocr/4.00/tessdata/"))
+#  st.write(os.environ)
 
   st.subheader('Image')
   st.image(org, caption=f"Original", width=700)
@@ -116,6 +143,10 @@ if img_file_buffer is not None:
   app(temp_file.name)
 else:
   demo = 'images/doc.jpg'
-  app(demo)
+  img = __preprocessing_handy_image(demo)
+  temp_file = NamedTemporaryFile(delete=False)
+  temp_file.write(img)
+#  app(demo)
+  app(temp_file.name)
   st.write("------------------------------------------")
   st.title('Try it and upload your own scanned document !')
