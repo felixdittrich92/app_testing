@@ -102,14 +102,14 @@ def __get_text_from_image_ocrmypdf(image):
   with TemporaryDirectory() as t:
     pdfa = str(t) + '/1.pdfa'
     txt = str(t) + '/1.txt'
-    ocrmypdf.ocr(input_file=image , output_file=pdfa, language='eng+deu', sidecar=txt, image_dpi=300, rotate_pages=True, remove_background=True, progress_bar=True)
+    ocrmypdf.ocr(input_file=image , output_file=pdfa, language='deu', optimize=10, redo_ocr=True, sidecar=txt, image_dpi=300, rotate_pages=True, threshold=True, remove_background=True, progress_bar=True)
     file = open(txt, 'r')
     text = file.read()
     # TODO ? Try PyMuPDF the pdfa file ? and test ocrmypdf parameter
   return text
 
 def app(image):
-  stocks = ["Handy Image Preprocessing", "use Autoencoder", "ocrmypdf"]
+  stocks = ["Handy Image Preprocessing", "denoise image", "ocrmypdf"]
   check_boxes = [st.sidebar.checkbox(stock, key=stock) for stock in stocks]
   checked_stocks = [stock for stock, checked in zip(stocks, check_boxes) if checked]
 
@@ -140,7 +140,7 @@ def app(image):
   st.subheader('Extracted text')
   st.text(text)
 
-  if "use Autoencoder" in checked_stocks:
+  if "denoise image" in checked_stocks:
     img = __auto_encode(temp_file.name)
     file_object = io.BytesIO()
     img.save(file_object, 'PNG')
