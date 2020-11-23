@@ -1,6 +1,7 @@
 import streamlit as st
 
 import io
+import os
 from tempfile import NamedTemporaryFile
 
 import cv2
@@ -15,6 +16,8 @@ from tensorflow.keras.models import load_model
 from tensorflow.keras.preprocessing.image import img_to_array, load_img, array_to_img
 
 CLASS_IDXS = ["not good", "good"]
+
+os.environ["TESSDATA_PREFIX"] = "/usr/share/tesseract-ocr/4.00/tessdata/"
 
 @st.cache(allow_output_mutation=True)
 def load_models():
