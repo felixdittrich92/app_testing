@@ -11,6 +11,7 @@ from PIL import Image
 from imutils.perspective import four_point_transform
 
 import pytesseract
+import ocrmypdf
 
 import numpy as np
 import tensorflow as tf
@@ -96,8 +97,14 @@ def __get_text_from_image(image):
   text = pytesseract.image_to_string(Image.open(image), config=custom_oem_psm_config, nice=3, lang='eng+deu')
   return text
 
+@st.cache
+def __get_text_from_image_ocrmypdf(image):
+  # TODO create Temporary dir save files and use it ...
+  ocrmypdf.ocr(input_file=image , output_file='x.pdfa' , language='eng+deu', sidecar='test.txt' , rotate_pages=True, remove_background=True)
+  return text
+
 def app(image):
-  stocks = ["Handy Image Preprocessing", "use Autoencoder", "todo - show timer", "todo - use other ocr"]
+  stocks = ["Handy Image Preprocessing", "use Autoencoder", "ocrmypdf"]
   check_boxes = [st.sidebar.checkbox(stock, key=stock) for stock in stocks]
   checked_stocks = [stock for stock, checked in zip(stocks, check_boxes) if checked]
 
@@ -112,7 +119,10 @@ def app(image):
   temp_file.write(file_object.getvalue())
 
   y_pred_class, score = __predict_score(temp_file.name)
-  text = __get_text_from_image(temp_file.name)
+  if "ocrmypdf" in checked_stocks:
+    text = __get_text_from_image_ocrmypdf(temp_file.name)
+  else:
+    text = __get_text_from_image(temp_file.name)
 
 #  display env
 #  st.write(os.listdir("/usr/share/tesseract-ocr/4.00/tessdata/"))
@@ -132,7 +142,10 @@ def app(image):
     temp_file = NamedTemporaryFile(delete=True)
     temp_file.write(file_object.getvalue())
     y_pred_class, score = __predict_score(temp_file.name)
-    text = __get_text_from_image(temp_file.name)
+    if "ocrmypdf" in checked_stocks:
+      text = __get_text_from_image_ocrmypdf(temp_file.name)
+    else:
+      text = __get_text_from_image(temp_file.name)
 
     st.write("------------------------------------------")
 
