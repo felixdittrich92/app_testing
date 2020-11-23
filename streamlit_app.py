@@ -96,7 +96,7 @@ def __get_text_from_image(image):
 
 def app(image):
   org = load_img(image)
-  org = __preprocessing_handy_image(image)
+  org = __preprocessing_handy_image(org)
   y_pred_class, score = __predict_score(image)
   text = __get_text_from_image(image)
 
