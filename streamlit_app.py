@@ -95,11 +95,11 @@ def __get_text_from_image(image):
   return text
 
 def app(image):
-  stocks = ["Preprocessing", "todo use other ocr"]
+  stocks = ["Handy Image Preprocessing", "use Autoencoder", "todo use other ocr"]
   check_boxes = [st.sidebar.checkbox(stock, key=stock) for stock in stocks]
   checked_stocks = [stock for stock, checked in zip(stocks, check_boxes) if checked]
 
-  if "Preprocessing" in checked_stocks:
+  if "Handy Image Preprocessing" in checked_stocks:
     org = __preprocessing_handy_image(image)
   else:
     org = load_img(image)
@@ -110,32 +110,32 @@ def app(image):
 #  display env
 #  st.write(os.listdir("/usr/share/tesseract-ocr/4.00/tessdata/"))
 #  st.write(os.environ)
+  if "use Autoencoder" in checked_stocks:
+    st.subheader('Image')
+    st.image(org, caption=f"Original", width=700)
+    st.subheader('Predictions')
+    st.write("Predicted class : %s" % (CLASS_IDXS[y_pred_class]))
+    st.write("Score : %f" % (score))
+    st.subheader('Extracted text')
+    st.text(text)
 
-  st.subheader('Image')
-  st.image(org, caption=f"Original", width=700)
-  st.subheader('Predictions')
-  st.write("Predicted class : %s" % (CLASS_IDXS[y_pred_class]))
-  st.write("Score : %f" % (score))
-  st.subheader('Extracted text')
-  st.text(text)
+    img = __auto_encode(image)
+    file_object = io.BytesIO()
+    img.save(file_object, 'PNG')
+    temp_file = NamedTemporaryFile(delete=False)
+    temp_file.write(file_object.getvalue())
+    y_pred_class, score = __predict_score(temp_file.name)
+    text = __get_text_from_image(temp_file.name)
 
-  img = __auto_encode(image)
-  file_object = io.BytesIO()
-  img.save(file_object, 'PNG')
-  temp_file = NamedTemporaryFile(delete=False)
-  temp_file.write(file_object.getvalue())
-  y_pred_class, score = __predict_score(temp_file.name)
-  text = __get_text_from_image(temp_file.name)
+    st.write("------------------------------------------")
 
-  st.write("------------------------------------------")
-
-  st.subheader('Image')
-  st.image(img, caption=f"Processed Image", width=700)
-  st.subheader('Predictions')
-  st.write("Predicted class : %s" % (CLASS_IDXS[y_pred_class]))
-  st.write("Score : %f" % (score))
-  st.subheader('Extracted text')
-  st.text(text)
+    st.subheader('Image')
+    st.image(img, caption=f"Processed Image", width=700)
+    st.subheader('Predictions')
+    st.write("Predicted class : %s" % (CLASS_IDXS[y_pred_class]))
+    st.write("Score : %f" % (score))
+    st.subheader('Extracted text')
+    st.text(text)
   st.markdown("Built with Streamlit by [Felix](https://github.com/felixdittrich92?tab=repositories)")
 
 
