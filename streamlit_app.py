@@ -19,7 +19,7 @@ from tensorflow.keras.preprocessing.image import img_to_array, load_img, array_t
 CLASS_IDXS = ["not good", "good"]
 
 os.environ["TESSDATA_PREFIX"] = "/usr/share/tesseract-ocr/4.00/tessdata/"
-#st.write(os.listdir("/usr/share/tesseract-ocr/4.00/tessdata/"))
+st.write(os.listdir("/usr/share/tesseract-ocr/4.00/tessdata/"))
 st.write(os.environ)
 
 
@@ -43,7 +43,9 @@ def __calculate_score(y_pred_class, y_pred_prob):
 @st.cache
 def __preprocessing_image(image):
   # Gaussian blur, Otsu's threshold
-  blur = cv2.GaussianBlur(image, (5,5), 0)
+  image = cv2.imread(image)
+  gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+  blur = cv2.GaussianBlur(gray, (5,5), 0)
   _, thresh = cv2.threshold(blur, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
 
   # find contours and sort for largest contour
