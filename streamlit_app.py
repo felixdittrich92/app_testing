@@ -101,10 +101,11 @@ def __get_text_from_image(image):
 def __get_text_from_image_ocrmypdf(image):
   with TemporaryDirectory() as t:
     pdfa = str(t) + '/1.pdfa'
-    txt= str(t) + '/1.txt'
+    txt = str(t) + '/1.txt'
     ocrmypdf.ocr(input_file=image , output_file=pdfa, language='eng+deu', sidecar=txt, image_dpi=300, rotate_pages=True, remove_background=True, progress_bar=True)
-    print(os.listdir(t))
-    print(txt)
+    file = open(txt, 'r')
+    text = file.read()
+    # TODO ? Try PyMuPDF the pdfa file ? and test ocrmypdf parameter
   return text
 
 def app(image):
