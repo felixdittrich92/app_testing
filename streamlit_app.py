@@ -18,11 +18,6 @@ from tensorflow.keras.preprocessing.image import img_to_array, load_img, array_t
 
 CLASS_IDXS = ["not good", "good"]
 
-os.environ["TESSDATA_PREFIX"] = "/usr/share/tesseract-ocr/4.00/tessdata/"
-st.write(os.listdir("/usr/share/tesseract-ocr/4.00/tessdata/"))
-st.write(os.environ)
-
-
 @st.cache(allow_output_mutation=True)
 def load_models():
   model_eval = load_model('models/doc_model.h5', compile=False)
@@ -43,6 +38,8 @@ def __calculate_score(y_pred_class, y_pred_prob):
 @st.cache
 def __preprocessing_image(image):
   # Gaussian blur, Otsu's threshold
+  img = Image.fromarray(image)
+  image = cv2.imread(img)
   gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
   blur = cv2.GaussianBlur(gray, (5,5), 0)
   _, thresh = cv2.threshold(blur, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
@@ -95,6 +92,7 @@ def __auto_encode(image):
 
 @st.cache
 def __get_text_from_image(image):
+  os.environ["TESSDATA_PREFIX"] = "/usr/share/tesseract-ocr/4.00/tessdata/"
   custom_oem_psm_config = r'--oem 3 --psm 6'
   text = pytesseract.image_to_string(Image.open(image), config=custom_oem_psm_config, nice=3)
   return text
@@ -103,6 +101,9 @@ def app(image):
   org = load_img(image)
   y_pred_class, score = __predict_score(image)
   text = __get_text_from_image(image)
+  
+  st.write(os.listdir("/usr/share/tesseract-ocr/4.00/tessdata/"))
+  st.write(os.environ)
 
   st.subheader('Image')
   st.image(org, caption=f"Original", width=700)
