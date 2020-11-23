@@ -43,7 +43,6 @@ def __calculate_score(y_pred_class, y_pred_prob):
 @st.cache
 def __preprocessing_image(image):
   # Gaussian blur, Otsu's threshold
-  image = cv2.imread(image)
   gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
   blur = cv2.GaussianBlur(gray, (5,5), 0)
   _, thresh = cv2.threshold(blur, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
