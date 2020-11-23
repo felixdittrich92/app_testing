@@ -20,7 +20,7 @@ CLASS_IDXS = ["not good", "good"]
 
 os.environ["TESSDATA_PREFIX"] = "/usr/share/tesseract-ocr/4.00/tessdata/"
 #st.write(os.listdir("/usr/share/tesseract-ocr/4.00/tessdata/"))
-st.write(os.environ())
+st.write(os.environ)
 
 
 @st.cache(allow_output_mutation=True)
