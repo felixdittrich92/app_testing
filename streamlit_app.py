@@ -117,7 +117,10 @@ def __get_text_from_image_ocrmypdf(image):
                  )
     file = open(txt, 'r')
     text = file.read()
-    base64_pdf = base64.b64encode(pdfa.read()).decode('utf-8')
+    pdfa = fitz.open(pdfa)
+    file_object = io.BytesIO()
+    pdfa.save(file_object, 'PDFA')
+    base64_pdf = base64.b64encode(pdfa.getvalue()).decode('utf-8')
     pdf_display = f'<embed src="data:application/pdf;base64,{base64_pdf}" width="700" height="1000" type="application/pdf">'
     # TODO ? Try PyMuPDF the pdfa file ? and test ocrmypdf parameter
   return text, pdf_display
