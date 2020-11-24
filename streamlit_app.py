@@ -157,7 +157,7 @@ def app(image):
     ocr_time = time.time() - start_time
   else:
     start_time = time.time()
-    text = __get_text_from_image(temp_file.name)
+    #text = __get_text_from_image(temp_file.name)
     ocr_time = time.time() - start_time
 
 #  display env
