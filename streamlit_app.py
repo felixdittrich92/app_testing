@@ -1,6 +1,7 @@
 import streamlit as st
 from streamlit import caching
 
+import base64
 import io
 import os
 import gc
