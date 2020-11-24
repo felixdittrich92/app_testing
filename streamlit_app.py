@@ -135,7 +135,7 @@ def app(image):
   
   file_object = io.BytesIO()
   org.save(file_object, 'PNG')
-  temp_file = NamedTemporaryFile(delete=True)
+  temp_file = NamedTemporaryFile(delete=False)
   temp_file.write(file_object.getvalue())
 
   start_time = time.time()
