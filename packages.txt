@@ -1,4 +1,3 @@
 tesseract-ocr-deu
-libjpeg-dev 
 libgl1-mesa-glx
 ocrmypdf

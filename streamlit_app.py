@@ -139,8 +139,8 @@ def app(image):
     org = load_img(image)
   
   file_object = io.BytesIO()
-  org.save(file_object, 'PNG')
-  temp_file = NamedTemporaryFile(delete=False)
+  org.save(file_object, 'JPEG')
+  temp_file = NamedTemporaryFile(delete=True)
   temp_file.write(file_object.getvalue())
 
   start_time = time.time()
@@ -174,7 +174,7 @@ def app(image):
     img = __auto_encode(temp_file.name)
     autoencode_time = time.time() - start_time
     file_object = io.BytesIO()
-    img.save(file_object, 'PNG')
+    img.save(file_object, 'JPEG')
     temp_file = NamedTemporaryFile(delete=True)
     temp_file.write(file_object.getvalue())
     start_time = time.time()
@@ -213,7 +213,7 @@ img_file_buffer = st.file_uploader("Upload an image", type=["png", "jpg", "jpeg"
 model_eval, model_auto = load_models()
 
 if img_file_buffer is not None:
-  temp_file = NamedTemporaryFile(delete=False)
+  temp_file = NamedTemporaryFile(delete=True)
   temp_file.write(img_file_buffer.getvalue())
   app(temp_file.name)
   img_file_buffer.seek(0)
