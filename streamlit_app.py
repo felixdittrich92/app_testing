@@ -134,7 +134,10 @@ def app(image):
   value_psm = st.sidebar.slider('page segmentation mode (ocrmypdf)', min_value=0, max_value=13, step=1, value=1)
 
   if "Handy Image Preprocessing" in checked_stocks:
-    org = __preprocessing_handy_image(image)
+    try:
+      org = __preprocessing_handy_image(image)
+    except:
+      st.warning("Cannot found 4 edges in the image")
   else:
     org = load_img(image)
   
