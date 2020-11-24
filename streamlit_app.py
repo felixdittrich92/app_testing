@@ -50,12 +50,6 @@ def __load_and_preprocess_custom_image(image_path):
   return img
 
 @st.cache
-def __mse(imageA, imageB):
-	err = np.sum((imageA.astype("float") - imageB.astype("float")) ** 2)
-	err /= float(imageA.shape[0] * imageA.shape[1])
-	return err
-
-@st.cache
 def __preprocessing_handy_image(image_path):
   image = cv2.imread(image_path)
   gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
@@ -140,14 +134,7 @@ def app(image):
   value_psm = st.sidebar.slider('page segmentation mode (ocrmypdf)', min_value=0, max_value=13, step=1, value=1)
 
   if "Handy Image Preprocessing" in checked_stocks:
-    try:
-      org = __preprocessing_handy_image(image)
-      test_img = load_img(image)
-      mse_error = __mse(org, test_img)
-      print(mse_error)
-    except:
-      st.warning("Cannot found 4 edges in the image use original image")
-      org = load_img(image)
+    org = __preprocessing_handy_image(image)
   else:
     org = load_img(image)
   
@@ -157,7 +144,11 @@ def app(image):
   temp_file.write(file_object.getvalue())
 
   start_time = time.time()
-  y_pred_class, score = __predict_score(temp_file.name)
+  try:
+    y_pred_class, score = __predict_score(temp_file.name)
+  except:
+    st.error("Preprocessing failed try without (Handy Image Preprocessing)")
+    raise Exception('error')
   pred_time = time.time() - start_time
 
   if "ocrmypdf" in checked_stocks:
@@ -191,7 +182,11 @@ def app(image):
     temp_file = NamedTemporaryFile(delete=False)
     temp_file.write(file_object.getvalue())
     start_time = time.time()
-    y_pred_class, score = __predict_score(temp_file.name)
+    try:
+      y_pred_class, score = __predict_score(temp_file.name)
+    except:
+      st.error("Preprocessing failed try without (Handy Image Preprocessing)")
+      raise Exception('error')
     pred_time = time.time() - start_time
     if "ocrmypdf" in checked_stocks:
       start_time = time.time()
