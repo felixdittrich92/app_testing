@@ -216,6 +216,7 @@ if img_file_buffer is not None:
   temp_file = NamedTemporaryFile(delete=False)
   temp_file.write(img_file_buffer.getvalue())
   app(temp_file.name)
+  img_file_buffer.seek(0)
 else:
   demo = 'images/doc.jpg'
   app(demo)
