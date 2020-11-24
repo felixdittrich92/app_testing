@@ -139,7 +139,7 @@ def app(image):
     org = load_img(image)
   
   file_object = io.BytesIO()
-  org.save(file_object, 'JPEG')
+  org.save(file_object, 'PNG')
   temp_file = NamedTemporaryFile(delete=False)
   temp_file.write(file_object.getvalue())
 
@@ -174,7 +174,7 @@ def app(image):
     img = __auto_encode(temp_file.name)
     autoencode_time = time.time() - start_time
     file_object = io.BytesIO()
-    img.save(file_object, 'JPEG')
+    img.save(file_object, 'PNG')
     temp_file = NamedTemporaryFile(delete=True)
     temp_file.write(file_object.getvalue())
     start_time = time.time()
