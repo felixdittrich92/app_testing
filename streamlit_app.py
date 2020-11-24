@@ -107,7 +107,7 @@ def __get_text_from_image_ocrmypdf(image):
     txt = str(t) + '/1.txt'
     ocrmypdf.ocr(input_file=image, 
                  output_file=pdfa, 
-                 language='deu',
+                 language=['deu', 'eng'],
                  force_ocr=True, 
                  deskew=True,
                  optimize=1, 
@@ -118,7 +118,7 @@ def __get_text_from_image_ocrmypdf(image):
                  clean=True, 
                  clean_final=True,
                  tesseract_pagesegmode=1,
-                 tesseract_oem=2,
+                 tesseract_oem=1,
                  progress_bar=True
                  )
     file = open(txt, 'r')
