@@ -148,7 +148,6 @@ def app(image):
     y_pred_class, score = __predict_score(temp_file.name)
   except:
     st.error("Preprocessing failed try without (Handy Image Preprocessing)")
-    raise Exception('error')
   pred_time = time.time() - start_time
 
   if "ocrmypdf" in checked_stocks:
@@ -186,7 +185,6 @@ def app(image):
       y_pred_class, score = __predict_score(temp_file.name)
     except:
       st.error("Preprocessing failed try without (Handy Image Preprocessing)")
-      raise Exception('error')
     pred_time = time.time() - start_time
     if "ocrmypdf" in checked_stocks:
       start_time = time.time()
