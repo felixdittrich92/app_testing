@@ -49,6 +49,12 @@ def __load_and_preprocess_custom_image(image_path):
   img = img_to_array(img).astype('float32')/255
   return img
 
+@st.chache
+def __mse(imageA, imageB):
+	err = np.sum((imageA.astype("float") - imageB.astype("float")) ** 2)
+	err /= float(imageA.shape[0] * imageA.shape[1])
+	return err
+
 @st.cache
 def __preprocessing_handy_image(image_path):
   image = cv2.imread(image_path)
@@ -136,6 +142,9 @@ def app(image):
   if "Handy Image Preprocessing" in checked_stocks:
     try:
       org = __preprocessing_handy_image(image)
+      test_img = load_img(image)
+      mse_error = __mse(org, test_img)
+      print(mse_error)
     except:
       st.warning("Cannot found 4 edges in the image use original image")
       org = load_img(image)
@@ -148,7 +157,7 @@ def app(image):
   temp_file.write(file_object.getvalue())
 
   start_time = time.time()
-  #y_pred_class, score = __predict_score(temp_file.name)
+  y_pred_class, score = __predict_score(temp_file.name)
   pred_time = time.time() - start_time
 
   if "ocrmypdf" in checked_stocks:
@@ -157,7 +166,7 @@ def app(image):
     ocr_time = time.time() - start_time
   else:
     start_time = time.time()
-    #text = __get_text_from_image(temp_file.name)
+    text = __get_text_from_image(temp_file.name)
     ocr_time = time.time() - start_time
 
 #  display env
