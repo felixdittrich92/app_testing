@@ -107,8 +107,8 @@ def __get_text_from_image_ocrmypdf(image, psm):
     txt = str(t) + '/1.txt'
     ocrmypdf.ocr(input_file=image, 
                  output_file=pdfa, 
-                 language='deu', # ['deu', 'eng']
-                 force_ocr=True, 
+                 language=['deu', 'eng'],
+                 force_ocr=False, 
                  deskew=True, # rotate textblock
                  optimize=1, # pdfa compresion
                  sidecar=txt, 
