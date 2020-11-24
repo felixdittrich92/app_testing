@@ -45,7 +45,10 @@ def __calculate_score(y_pred_class, y_pred_prob):
 
 @st.cache
 def __load_and_preprocess_custom_image(image_path):
-  img = load_img(image_path, color_mode = 'grayscale') # target_size = (700, 700)
+  image = cv2.imread(image_path)
+  gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+  img = cv2.resize(gray, (700, 700))
+  #img = load_img(image_path, color_mode = 'grayscale', target_size = (700, 700))
   img = img_to_array(img).astype('float32')/255
   return img
 
