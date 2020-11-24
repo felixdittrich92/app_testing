@@ -1,8 +1,6 @@
 tensorflow
-numpy
 opencv-python
 pytesseract
 imutils
 scipy
 ocrmypdf
-Pillow

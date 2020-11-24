@@ -3,7 +3,6 @@ from streamlit import caching
 
 import time
 
-import base64
 import io
 import os
 import gc

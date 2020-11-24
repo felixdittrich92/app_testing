@@ -1,12 +1,4 @@
-libxml2-dev 
-libxslt1-dev 
-antiword 
-unrtf 
-poppler-utils 
 tesseract-ocr-deu
-libgtk2.0-dev 
 libjpeg-dev 
-libtiff-dev
-swig
 libgl1-mesa-glx
 ocrmypdf
