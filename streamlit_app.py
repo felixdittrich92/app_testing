@@ -104,11 +104,20 @@ def __get_text_from_image_ocrmypdf(image):
   with TemporaryDirectory() as t:
     pdfa = str(t) + '/1.pdfa'
     txt = str(t) + '/1.txt'
-    ocrmypdf.ocr(input_file=image , output_file=pdfa, language='deu', optimize=3, sidecar=txt, image_dpi=300, rotate_pages=True, remove_background=True, progress_bar=True)
+    ocrmypdf.ocr(input_file=image, 
+                 output_file=pdfa, 
+                 language='deu', 
+                 optimize=3, 
+                 sidecar=txt, 
+                 image_dpi=300, 
+                 rotate_pages=True, 
+                 remove_background=True, 
+                 clean=True, 
+                 progress_bar=True
+                 )
     file = open(txt, 'r')
     text = file.read()
-    pdfa = fitz.open(pdfa)
-    base64_pdf = base64.b64encode(pdfa)
+    base64_pdf = base64.b64encode(pdfa.read()).decode('utf-8')
     pdf_display = f'<embed src="data:application/pdf;base64,{base64_pdf}" width="700" height="1000" type="application/pdf">'
     # TODO ? Try PyMuPDF the pdfa file ? and test ocrmypdf parameter
   return text, pdf_display
