@@ -148,7 +148,7 @@ def app(image):
   temp_file.write(file_object.getvalue())
 
   start_time = time.time()
-  y_pred_class, score = __predict_score(temp_file.name)
+  #y_pred_class, score = __predict_score(temp_file.name)
   pred_time = time.time() - start_time
 
   if "ocrmypdf" in checked_stocks:
