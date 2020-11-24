@@ -109,16 +109,16 @@ def __get_text_from_image_ocrmypdf(image):
                  output_file=pdfa, 
                  language=['deu', 'eng'],
                  force_ocr=True, 
-                 deskew=True,
-                 optimize=1, 
+                 deskew=True, # rotate textblock
+                 optimize=1, # pdfa compresion
                  sidecar=txt, 
                  image_dpi=300, 
                  rotate_pages=True, 
                  remove_background=True, 
                  clean=True, 
                  clean_final=True,
-                 tesseract_pagesegmode=1,
-                 tesseract_oem=2,
+                 tesseract_pagesegmode=1, # detect doc orientation and textblocks
+                 tesseract_oem=1, # ocr engine 3-default  1-LSTM
                  progress_bar=True
                  )
     file = open(txt, 'r')
