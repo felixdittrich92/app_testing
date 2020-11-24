@@ -46,7 +46,7 @@ def __calculate_score(y_pred_class, y_pred_prob):
 @st.cache
 def __load_and_preprocess_custom_image(image_path):
   img = load_img(image_path, color_mode = 'grayscale', target_size = (700, 700))
-  img = img_to_array(img) #.astype('float32')/255
+  img = img_to_array(img).astype('float32')/255
   return img
 
 @st.cache
@@ -203,7 +203,6 @@ def app(image):
     st.write("Compute time: %f sec" % (ocr_time))
 
   st.markdown("Built with Streamlit by [Felix](https://github.com/felixdittrich92?tab=repositories)")
-  gc.collect()
 
 
 st.title("denoise and evaluate")
@@ -217,8 +216,10 @@ if img_file_buffer is not None:
   temp_file.write(img_file_buffer.getvalue())
   app(temp_file.name)
   img_file_buffer.seek(0)
+  gc.collect()
 else:
   demo = 'images/doc.jpg'
   app(demo)
   st.write("------------------------------------------")
   st.title('Try it and upload your own scanned document !')
+  gc.collect()
