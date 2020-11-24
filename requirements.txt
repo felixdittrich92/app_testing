@@ -5,3 +5,4 @@ pytesseract
 imutils
 scipy
 ocrmypdf
+Pillow
