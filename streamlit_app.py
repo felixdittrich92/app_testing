@@ -137,7 +137,8 @@ def app(image):
     try:
       org = __preprocessing_handy_image(image)
     except:
-      st.warning("Cannot found 4 edges in the image")
+      st.warning("Cannot found 4 edges in the image use original image")
+      org = load_img(image)
   else:
     org = load_img(image)
   
