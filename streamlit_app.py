@@ -105,8 +105,10 @@ def __get_text_from_image_ocrmypdf(image):
     ocrmypdf.ocr(input_file=image , output_file=pdfa, language='deu', optimize=3, sidecar=txt, image_dpi=300, rotate_pages=True, remove_background=True, progress_bar=True)
     file = open(txt, 'r')
     text = file.read()
+    base64_pdf = base64.b64encode(pdfa.read()).decode('utf-8')
+    pdf_display = f'<embed src="data:application/pdf;base64,{base64_pdf}" width="700" height="1000" type="application/pdf">'
     # TODO ? Try PyMuPDF the pdfa file ? and test ocrmypdf parameter
-  return text
+  return text, pdf_display
 
 def app(image):
   stocks = ["Handy Image Preprocessing", "denoise image", "ocrmypdf"]
@@ -125,7 +127,8 @@ def app(image):
 
   y_pred_class, score = __predict_score(temp_file.name)
   if "ocrmypdf" in checked_stocks:
-    text = __get_text_from_image_ocrmypdf(temp_file.name)
+    text, pdf_display = __get_text_from_image_ocrmypdf(temp_file.name) 
+    st.markdown(pdf_display, unsafe_allow_html=True)
   else:
     text = __get_text_from_image(temp_file.name)
 
@@ -148,7 +151,8 @@ def app(image):
     temp_file.write(file_object.getvalue())
     y_pred_class, score = __predict_score(temp_file.name)
     if "ocrmypdf" in checked_stocks:
-      text = __get_text_from_image_ocrmypdf(temp_file.name)
+      text, pdf_display = __get_text_from_image_ocrmypdf(temp_file.name)
+      st.markdown(pdf_display, unsafe_allow_html=True)
     else:
       text = __get_text_from_image(temp_file.name)
 
