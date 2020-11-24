@@ -46,7 +46,7 @@ def __calculate_score(y_pred_class, y_pred_prob):
 @st.cache
 def __load_and_preprocess_custom_image(image_path):
   img = load_img(image_path, color_mode = 'grayscale', target_size = (700, 700))
-  img = img_to_array(img).astype('float32')/255
+  img = img_to_array(img) #.astype('float32')/255
   return img
 
 @st.cache
@@ -175,7 +175,7 @@ def app(image):
     autoencode_time = time.time() - start_time
     file_object = io.BytesIO()
     img.save(file_object, 'JPEG')
-    temp_file = NamedTemporaryFile(delete=True)
+    temp_file = NamedTemporaryFile(delete=False)
     temp_file.write(file_object.getvalue())
     start_time = time.time()
     y_pred_class, score = __predict_score(temp_file.name)
