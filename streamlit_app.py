@@ -118,7 +118,7 @@ def __get_text_from_image_ocrmypdf(image):
                  clean=True, 
                  clean_final=True,
                  tesseract_pagesegmode=1,
-                 tesseract_oem=1,
+                 tesseract_oem=2,
                  progress_bar=True
                  )
     file = open(txt, 'r')
