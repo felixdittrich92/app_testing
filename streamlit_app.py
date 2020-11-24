@@ -11,6 +11,8 @@ from tempfile import NamedTemporaryFile, TemporaryDirectory
 import cv2
 from PIL import Image
 from imutils.perspective import four_point_transform
+from compimg.similarity import SSIM
+
 
 import pytesseract
 import ocrmypdf
@@ -135,6 +137,11 @@ def app(image):
 
   if "Handy Image Preprocessing" in checked_stocks:
     org = __preprocessing_handy_image(image)
+
+    test_img = img_to_array(org)
+    test2_img = load_img(image)
+    result = SSIM().compare(test_img, test2_img)
+    print(result)
   else:
     org = load_img(image)
   

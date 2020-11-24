@@ -4,3 +4,4 @@ pytesseract
 imutils
 scipy
 ocrmypdf
+compimg
