@@ -16,6 +16,8 @@ from imutils.perspective import four_point_transform
 import pytesseract
 import ocrmypdf
 
+import re
+
 import numpy as np
 import tensorflow as tf
 
@@ -123,6 +125,7 @@ def __get_text_from_image_ocrmypdf(image, psm):
                  )
     file = open(txt, 'r')
     text = file.read()
+    text =  re.sub(r"\b[a-zA-Z]\b", '', text, flags=re.MULTILINE)
   return text
 
 def app(image):
