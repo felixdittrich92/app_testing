@@ -105,13 +105,16 @@ def __get_text_from_image_ocrmypdf(image):
     txt = str(t) + '/1.txt'
     ocrmypdf.ocr(input_file=image, 
                  output_file=pdfa, 
-                 language='deu', 
-                 optimize=3, 
+                 language='deu',
+                 force_ocr=True, 
+                 deskew=True,
+                 optimize=1, 
                  sidecar=txt, 
                  image_dpi=300, 
                  rotate_pages=True, 
                  remove_background=True, 
                  clean=True, 
+                 clean_final=True,
                  progress_bar=True
                  )
     file = open(txt, 'r')
