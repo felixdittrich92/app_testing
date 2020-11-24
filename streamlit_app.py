@@ -107,7 +107,7 @@ def __get_text_from_image_ocrmypdf(image, psm):
     txt = str(t) + '/1.txt'
     ocrmypdf.ocr(input_file=image, 
                  output_file=pdfa, 
-                 language=['deu', 'eng'],
+                 language='deu', # ['deu', 'eng']
                  force_ocr=True, 
                  deskew=True, # rotate textblock
                  optimize=1, # pdfa compresion
@@ -129,7 +129,7 @@ def app(image):
   stocks = ["Handy Image Preprocessing", "denoise image", "ocrmypdf"]
   check_boxes = [st.sidebar.checkbox(stock, key=stock) for stock in stocks]
   checked_stocks = [stock for stock, checked in zip(stocks, check_boxes) if checked]
-  value_psm = st.sidebar.slider('page segmentation mode (ocrmypdf)', min_value=0, max_value=13, step=1, value=3)
+  value_psm = st.sidebar.slider('page segmentation mode (ocrmypdf)', min_value=0, max_value=13, step=1, value=1)
 
   if "Handy Image Preprocessing" in checked_stocks:
     org = __preprocessing_handy_image(image)
