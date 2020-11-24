@@ -202,6 +202,7 @@ def app(image):
     st.text(text)
     st.write("Compute time: %f sec" % (ocr_time))
 
+  gc.collect()
   st.markdown("Built with Streamlit by [Felix](https://github.com/felixdittrich92?tab=repositories)")
 
 
@@ -216,10 +217,8 @@ if img_file_buffer is not None:
   temp_file.write(img_file_buffer.getvalue())
   app(temp_file.name)
   img_file_buffer.seek(0)
-  gc.collect()
 else:
   demo = 'images/doc.jpg'
   app(demo)
   st.write("------------------------------------------")
   st.title('Try it and upload your own scanned document !')
-  gc.collect()
