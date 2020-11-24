@@ -159,10 +159,10 @@ def app(image):
   st.subheader('Predictions')
   st.write("Predicted class : %s" % (CLASS_IDXS[y_pred_class]))
   st.write("Score : %f" % (score))
-  st.write("Compute time: %f" % (pred_time))
+  st.write("Compute time: %f sec" % (pred_time))
   st.subheader('Extracted text')
   st.text(text)
-  st.write("Compute time: %f" % (ocr_time))
+  st.write("Compute time: %f sec" % (ocr_time))
 
   if "denoise image" in checked_stocks:
     start_time = time.time()
