@@ -129,8 +129,8 @@ def app(image):
   stocks = ["Handy Image Preprocessing", "denoise image", "ocrmypdf"]
   check_boxes = [st.sidebar.checkbox(stock, key=stock) for stock in stocks]
   checked_stocks = [stock for stock, checked in zip(stocks, check_boxes) if checked]
-  value_psm = st.sidebar.slider('page segmentation mode (only with ocrmypdf)', min_value=0, max_value=13, step=1, value=1)
-  value_oem = st.sidebar.slider('OCR engine (only with ocrmypdf)', min_value=0, max_value=3, step=1, value=1)
+  value_psm = st.sidebar.slider('page segmentation mode (ocrmypdf)', min_value=0, max_value=13, step=1, value=1)
+  value_oem = st.sidebar.slider('OCR engine (ocrmypdf)', min_value=0, max_value=3, step=1, value=1)
 
   if "Handy Image Preprocessing" in checked_stocks:
     org = __preprocessing_handy_image(image)
