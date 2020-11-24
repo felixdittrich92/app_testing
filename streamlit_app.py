@@ -139,7 +139,7 @@ def app(image):
     org = __preprocessing_handy_image(image)
 
     test_img = img_to_array(org)
-    test2_img = load_img(image)
+    test2_img = img_to_array(image)
     result = SSIM().compare(test_img, test2_img)
     print(result)
   else:
