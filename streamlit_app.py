@@ -49,7 +49,7 @@ def __load_and_preprocess_custom_image(image_path):
   img = img_to_array(img).astype('float32')/255
   return img
 
-@st.chache
+@st.cache
 def __mse(imageA, imageB):
 	err = np.sum((imageA.astype("float") - imageB.astype("float")) ** 2)
 	err /= float(imageA.shape[0] * imageA.shape[1])
