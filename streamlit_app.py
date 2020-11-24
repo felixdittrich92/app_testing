@@ -143,7 +143,7 @@ def app(image):
   
   file_object = io.BytesIO()
   org.save(file_object, 'JPEG')
-  temp_file = NamedTemporaryFile(delete=True)
+  temp_file = NamedTemporaryFile(delete=False)
   temp_file.write(file_object.getvalue())
 
   start_time = time.time()
@@ -216,7 +216,7 @@ img_file_buffer = st.file_uploader("Upload an image", type=["png", "jpg", "jpeg"
 model_eval, model_auto = load_models()
 
 if img_file_buffer is not None:
-  temp_file = NamedTemporaryFile(delete=True)
+  temp_file = NamedTemporaryFile(delete=False)
   temp_file.write(img_file_buffer.getvalue())
   app(temp_file.name)
   img_file_buffer.seek(0)
