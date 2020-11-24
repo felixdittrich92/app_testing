@@ -1,6 +1,8 @@
 import streamlit as st
 from streamlit import caching
 
+import time
+
 import base64
 import io
 import os
@@ -119,7 +121,6 @@ def __get_text_from_image_ocrmypdf(image):
                  )
     file = open(txt, 'r')
     text = file.read()
-    # TODO ? Try PyMuPDF the pdfa file ? and test ocrmypdf parameter
   return text
 
 def app(image):
@@ -137,11 +138,18 @@ def app(image):
   temp_file = NamedTemporaryFile(delete=True)
   temp_file.write(file_object.getvalue())
 
+  start_time = time.time()
   y_pred_class, score = __predict_score(temp_file.name)
+  pred_time = time.time() - start_time
+
   if "ocrmypdf" in checked_stocks:
+    start_time = time.time()
     text = __get_text_from_image_ocrmypdf(temp_file.name) 
+    ocr_time = time.time() - start_time
   else:
+    start_time = time.time()
     text = __get_text_from_image(temp_file.name)
+    ocr_time = time.time() - start_time
 
 #  display env
 #  st.write(os.listdir("/usr/share/tesseract-ocr/4.00/tessdata/"))
@@ -151,30 +159,43 @@ def app(image):
   st.subheader('Predictions')
   st.write("Predicted class : %s" % (CLASS_IDXS[y_pred_class]))
   st.write("Score : %f" % (score))
+  st.write("Compute time: %f" % (pred_time))
   st.subheader('Extracted text')
   st.text(text)
+  st.write("Compute time: %f" % (ocr_time))
 
   if "denoise image" in checked_stocks:
+    start_time = time.time()
     img = __auto_encode(temp_file.name)
+    autoencode_time = time.time() - start_time
     file_object = io.BytesIO()
     img.save(file_object, 'PNG')
     temp_file = NamedTemporaryFile(delete=True)
     temp_file.write(file_object.getvalue())
+    start_time = time.time()
     y_pred_class, score = __predict_score(temp_file.name)
+    pred_time = time.time() - start_time
     if "ocrmypdf" in checked_stocks:
+      start_time = time.time()
       text = __get_text_from_image_ocrmypdf(temp_file.name)
+      ocr_time = time.time() - start_time
     else:
+      start_time = time.time()
       text = __get_text_from_image(temp_file.name)
+      ocr_time = time.time() - start_time
 
     st.write("------------------------------------------")
 
     st.subheader('Image')
     st.image(img, caption=f"Processed Image", width=700)
+    st.write("Compute time for denoising: %f sec" % (autoencode_time))
     st.subheader('Predictions')
     st.write("Predicted class : %s" % (CLASS_IDXS[y_pred_class]))
     st.write("Score : %f" % (score))
+    st.write("Compute time: %f sec" % (pred_time))
     st.subheader('Extracted text')
     st.text(text)
+    st.write("Compute time: %f sec" % (ocr_time))
 
   st.markdown("Built with Streamlit by [Felix](https://github.com/felixdittrich92?tab=repositories)")
   gc.collect()
