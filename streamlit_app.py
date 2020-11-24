@@ -13,6 +13,7 @@ from imutils.perspective import four_point_transform
 
 import pytesseract
 import ocrmypdf
+import fitz
 
 import numpy as np
 import tensorflow as tf
@@ -106,6 +107,7 @@ def __get_text_from_image_ocrmypdf(image):
     ocrmypdf.ocr(input_file=image , output_file=pdfa, language='deu', optimize=3, sidecar=txt, image_dpi=300, rotate_pages=True, remove_background=True, progress_bar=True)
     file = open(txt, 'r')
     text = file.read()
+    pdfa = fitz.open(pdfa)
     base64_pdf = base64.b64encode(pdfa.read()).decode('utf-8')
     pdf_display = f'<embed src="data:application/pdf;base64,{base64_pdf}" width="700" height="1000" type="application/pdf">'
     # TODO ? Try PyMuPDF the pdfa file ? and test ocrmypdf parameter
