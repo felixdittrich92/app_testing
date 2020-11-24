@@ -101,7 +101,7 @@ def __get_text_from_image(image):
   return text
 
 @st.cache
-def __get_text_from_image_ocrmypdf(image, psm, oem):
+def __get_text_from_image_ocrmypdf(image, psm):
   with TemporaryDirectory() as t:
     pdfa = str(t) + '/1.pdfa'
     txt = str(t) + '/1.txt'
@@ -118,7 +118,7 @@ def __get_text_from_image_ocrmypdf(image, psm, oem):
                  clean=True, 
                  clean_final=True,
                  tesseract_pagesegmode=psm, # detect doc orientation and textblocks
-                 tesseract_oem=oem, # ocr engine 3-default  1-LSTM
+                 tesseract_oem=1, # ocr engine 3-default  1-LSTM
                  progress_bar=True
                  )
     file = open(txt, 'r')
@@ -129,8 +129,7 @@ def app(image):
   stocks = ["Handy Image Preprocessing", "denoise image", "ocrmypdf"]
   check_boxes = [st.sidebar.checkbox(stock, key=stock) for stock in stocks]
   checked_stocks = [stock for stock, checked in zip(stocks, check_boxes) if checked]
-  value_psm = st.sidebar.slider('page segmentation mode (ocrmypdf)', min_value=0, max_value=13, step=1, value=1)
-  value_oem = st.sidebar.slider('OCR engine (ocrmypdf)', min_value=0, max_value=3, step=1, value=1)
+  value_psm = st.sidebar.slider('page segmentation mode (ocrmypdf)', min_value=0, max_value=13, step=1, value=3)
 
   if "Handy Image Preprocessing" in checked_stocks:
     org = __preprocessing_handy_image(image)
@@ -148,7 +147,7 @@ def app(image):
 
   if "ocrmypdf" in checked_stocks:
     start_time = time.time()
-    text = __get_text_from_image_ocrmypdf(temp_file.name, value_psm, value_oem) 
+    text = __get_text_from_image_ocrmypdf(temp_file.name, value_psm) 
     ocr_time = time.time() - start_time
   else:
     start_time = time.time()
@@ -181,7 +180,7 @@ def app(image):
     pred_time = time.time() - start_time
     if "ocrmypdf" in checked_stocks:
       start_time = time.time()
-      text = __get_text_from_image_ocrmypdf(temp_file.name, value_psm, value_oem)
+      text = __get_text_from_image_ocrmypdf(temp_file.name, value_psm)
       ocr_time = time.time() - start_time
     else:
       start_time = time.time()
