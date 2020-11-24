@@ -126,7 +126,6 @@ def __get_text_from_image_ocrmypdf(image, psm):
     file = open(txt, 'r')
     text = file.read()
     text = text.replace('\n\n', '\n')
-    #text =  re.sub(r"\b[a-zA-Z]\b", '', text, flags=re.MULTILINE)
   return text
 
 def app(image):
